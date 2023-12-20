@@ -19,6 +19,7 @@ In this project, we analyze a comprehensive dataset of sales records to uncover 
 - **MySQL**: For storing and querying data.
 - **Pandas & NumPy**: For data manipulation.
 - **Matplotlib & Seaborn**: For data visualization.
+- **VBA and Excel**: For slight data formating and cleaning.
 
 ## Getting Started
 

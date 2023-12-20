@@ -1,0 +1,48 @@
+Sub SeparateDateTimeAndFormatColumns()
+    Dim ws As Worksheet
+    Dim lastRow As Long
+    Dim i As Long
+    Dim orderDateTime As Variant
+    Dim orderDate As Date
+    Dim orderTime As Date
+    
+    ' Set your worksheet
+    Set ws = ThisWorkbook.Sheets("all_data_modified")
+    
+    ' Insert a new column 'Order Time' to the right of 'Order Date' column (Column F)
+    ws.Columns("F").Insert Shift:=xlToRight
+    
+    ' Rename the new column as 'Order Time'
+    ws.Cells(1, "F").Value = "Order Time"
+    
+    ' Find the last used row in the 'Order Date' column (Column E in this case)
+    lastRow = ws.Cells(ws.Rows.Count, "E").End(xlUp).Row
+    
+    ' Loop through each row starting from the second row (assuming headers in row 1)
+    For i = 2 To lastRow
+        ' Get the combined date and time from the 'Order Date' column (Column E)
+        orderDateTime = ws.Cells(i, "E").Value
+        
+        ' Check if the cell is not empty and contains a space delimiter
+        If Not IsEmpty(orderDateTime) And InStr(orderDateTime, " ") > 0 Then
+            ' Split the order date and time based on the space delimiter
+            Dim dateTimeArray() As String
+            dateTimeArray = Split(orderDateTime, " ")
+            
+            ' Assign the date and time parts
+            orderDate = DateValue(dateTimeArray(0)) ' Convert to date type
+            orderTime = TimeValue(dateTimeArray(1)) ' Convert to time type
+            
+            ' Put the date in the 'Order Date' column (Column E) and format as date type
+            ws.Cells(i, "E").Value = orderDate
+            ws.Cells(i, "E").NumberFormat = "yyyy-mm-dd" ' Change the format as needed
+            
+            ' Put the time in the 'Order Time' column (Column F) and format as time type
+            ws.Cells(i, "F").Value = orderTime
+            ws.Cells(i, "F").NumberFormat = "hh:mm:ss" ' Change the format as needed
+        End If
+    Next i
+    
+    ' Label the new column as 'Order Time'
+    ws.Cells(1, "F").Value = "Order Time"
+End Sub
